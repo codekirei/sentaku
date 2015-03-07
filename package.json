@@ -1,0 +1,22 @@
+{
+  "name": "sentaku",
+  "version": "0.1.0",
+  "description": "simple, minimalist config management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "config",
+    "conf",
+    "configuration",
+    "env",
+    "environment"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "mout": "^0.11.0",
+    "optional": "^0.1.3"
+  }
+}
