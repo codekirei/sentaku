@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////
 // NPM Modules
 ////////////////////////////////////////////////////////////
-var mix      = require('mout/object/deepMixIn')
+var merge    = require('lodash.merge')
 var optional = require('optional')
 var path     = require('path')
 
@@ -18,5 +18,5 @@ var sentaku = module.exports = function(dir) {
   this._env        = process.env.NODE_ENV || 'dev'
   this._globalConf = require(path.join(this._dir, 'global'))
   this._envConf    = optional(path.join(this._dir, this._env))
-  return mix(this._globalConf, this._envConf)
+  return merge(this._globalConf, this._envConf)
 }
