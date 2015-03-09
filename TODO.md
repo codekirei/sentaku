@@ -1,17 +1,16 @@
 #Todo
 
-https://docs.npmjs.com/
-
-*	dev deps vs deps
-*	write readme
 *	push to gh, update package.json with repo
-*	push to npm
 *	move todo to gh issues roadmap
+*	push to npm
 
 #1.0
 
 *	error handling?
 *	write tests
 *	hook up to travis
-*	code coverage button
-*	up to date dependencies
+*	readme buttons (shields.io)
+	*	npm version num (http://badge.fury.io/for/js)
+	*	test passing (travis)
+	*	up to date dependencies (https://david-dm.org/)
+	*	code coverage (coveralls.io)
