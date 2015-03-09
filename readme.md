@@ -1,16 +1,16 @@
-#Sentaku
+# Sentaku
 
 *sentaku* (Japanese) -- noun -- selection; choice; option
 
 A simple, minimalist config manager for Node.js projects.
 
-##Installing
+## Installing
 
 ```sh
 $ npm i --save sentaku
 ```
 
-##Why Sentaku
+## Why Sentaku
 
 There are other great config management options out there (e.g. [config](https://www.npmjs.com/package/config), [dotenv](https://www.npmjs.com/package/dotenv)), so why Sentaku?
 
@@ -18,16 +18,16 @@ Sentaku works by requiring exported JS objects through Node's native `require` s
 
 Despite this minimalist approach, Sentaku does support a global config with env-specific configs and custom config directories.
 
-##Using Sentaku
+## Using Sentaku
 
-###The Quick and Dirty Explanation
+### The Quick and Dirty Explanation
 
 ```js
 var conf = require('sentaku')()
 ```
 If you're storing your configs somewhere other than `config/`, specify the path from root with a string in the trailing `()`. Main conf in `config/global.js`, env-specific confs in `config/{env}.js`. Conf files are just exported JS objects: `module.exports = {}`. Access conf values with dot notation.
 
-###The Detailed Explanation
+### The Detailed Explanation
 
 **1. Make a config dir.** Sentaku defaults to 'config', but you can call it whatever you like.
 
@@ -94,7 +94,7 @@ $ NODE_ENV=prod node index.js
 
 The first command should output `1337` from `global.js`, while `8080` from `prod.js` should be output when specifying `NODE_ENV=prod`.
 
-##Security, Configs, and Version Control
+## Security, Configs, and Version Control
 
 Don't put private info (e.g. your AWS Secret Key) in version-controlled configs that might end up in public repos. [.gitignore](http://www.git-scm.com/docs/gitignore) is your friend.
 
@@ -102,6 +102,6 @@ If you commit sensitive info to any public repo, consider it compromised. If thi
 
 For open-source projects that interact with private apis/keys/passwords, consider creating a `global.js.example` in your config dir with blank values and committing that file.
 
-##License
+## License
 
 Mit. See license.md.
