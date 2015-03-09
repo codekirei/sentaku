@@ -20,6 +20,15 @@ Despite this minimalist approach, Sentaku does support a global config with env-
 
 ##Using Sentaku
 
+###The Quick and Dirty Explanation
+
+```js
+var conf = require('sentaku')()
+```
+If you're storing your configs somewhere other than 'config/', specify the path from root with a string in the trailing `()`. Main conf in `config/global.js`, env-specific confs in `config/{env}.js`. Conf files are just exported JS objects: `module.exports = {}`.
+
+###The Detailed Explanation
+
 **1. Make a config dir.** Sentaku defaults to 'config', but you can call it whatever you like.
 
 ```sh
