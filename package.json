@@ -1,7 +1,7 @@
 {
   "name": "sentaku",
   "description": "A simple, minimalist config manager",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Jacob Blakely <jacob@codekirei.com>",
   "license": "MIT",
   "repository": "codekirei/sentaku",
