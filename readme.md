@@ -12,96 +12,67 @@ $ npm i --save sentaku
 
 ## Why Sentaku
 
-There are other great config management options out there (e.g. [config](https://www.npmjs.com/package/config), [dotenv](https://www.npmjs.com/package/dotenv)), so why Sentaku?
+One of the simplest ways to use a config in a Node.js project is to require a `config.js` file that exports a JS object:
 
-Sentaku works by requiring exported JS objects through Node's native `require` system, which means no parsing libraries (e.g. YAML) and no synchronous filesystem calls (`fs.readFileSync(config)`). This keeps Sentaku fast, small, and focused.
+```js
+// config.js
+module.exports = {
+  key: 'value',
+  simple: true
+}
+```
+```js
+// app.js
+var conf = require('./config.js')
 
-Despite this minimalist approach, Sentaku does support a global config with env-specific configs and custom config directories.
+console.log(conf.simple)
+```
+
+Sentaku is that, plus support for `NODE_ENV`-specific configs and a little pathing goodness.
+
+This approach has numerous benefits:
+
+* Configuration as code -- configs are JS objects, so you can do javascript-y things like generating keys with [getters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get)
+* No synchronous filesystem reads to find and access configs
+* No parsing libraries to turn your configs into a native javascript object for consumption... because your configs are already a native javascript object
+
+Sentaku is [intentionally minimalist](https://github.com/codekirei/sentaku/blob/master/index.js). If you would like more features in your config manager, I encourage you to check out the [many great configuration modules out there](http://npmsearch.com/?q=config).
 
 ## Using Sentaku
 
-### The Quick and Dirty Explanation
-
 ```js
-var conf = require('sentaku')()
-```
-If you're storing your configs somewhere other than `config/`, specify the path from root with a string in the trailing `()`. Main conf in `config/global.js`, env-specific confs in `config/{env}.js`. Conf files are just exported JS objects: `module.exports = {}`. Access conf values with dot notation.
-
-### The Detailed Explanation
-
-**1. Make a config dir.** Sentaku defaults to 'config', but you can call it whatever you like.
-
-```sh
-$ mkdir config && cd config
-```
-
-**2. Make a global config.**
-
-```sh
-$ touch global.js
-```
-
-Configure `global.js` in your editor of choice. It should look something like this:
-
-```js
-// global.js
+// node_modules/sentakuConfs/default.js
 module.exports = {
-  // example
-  server: {
-    port: 1337
-  }
+  key: 'val'
 }
 ```
-
-Simply export a JS object containing your config data.
-
-**3. Make env-specific configs (optional).**
-
-If you want to override a config parameter in a specific Node environment, make another config named after said env. There is no fuzzy-matching logic, so your config name and env must match exactly. If NODE_ENV is unspecified, 'dev' is assumed.
-
-
-```sh
-$ touch prod.js
-```
-
 ```js
-// prod.js
-module.exports = {
-  server: {
-    port: 8080
-  }
-}
+// any file in app
+var conf = require('sentaku')
 ```
 
-**4. Require and load Sentaku anywhere you want to use your configs.** Access config params with dot notation.
+* Put configs in `node_modules/sentakuConfs` (or symlink that path to your config dir)
+* Default config values in `default.js`
+* Env-specific overrides in `{env}.js` -- no fuzzy-matching, so `NODE_ENV=dev` matches `dev.js` not `development.js`
+  * Sentaku assumes `NODE_ENV` is `dev` unless otherwise specified
+* Access config values with [property accessors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_Accessors)
 
-```js
-// index.js
+If you've ignored the entire `node_modules` directory with `.gitignore`, you'll likely want to amend that so `sentakuConfs` gets committed:
 
-var conf = require('sentaku')()
-
-console.log(conf.server.port)
+```
+# .gitignore
+node_modules/*
+!node_modules/sentakuConfs
 ```
 
-Don't forget the trailing `()` at the end of the require call. If you are using a config dir other than 'config', point to it with a string containing the path from project root: `require('sentaku')('path/to/conf/dir')`.
+## Regarding Security, Configs, and Version Control
 
-If you've followed the examples above, you can make sure everything is functioning properly like this:
+Don't put private info (e.g. your AWS Secret Key) in version-controlled configs that might end up in public repos.
 
-```sh
-$ node index.js
-$ NODE_ENV=prod node index.js
-```
+If you commit sensitive info to any public repo, consider it compromised. If this happens, you should always generate a new key or password. You can mitigate the damage by following GitHub's instructions [here](https://help.github.com/articles/remove-sensitive-data/), but even then you should *still* probably generate a new key or password.
 
-The first command should output `1337` from `global.js`, while `8080` from `prod.js` should be output when specifying `NODE_ENV=prod`.
-
-## Security, Configs, and Version Control
-
-Don't put private info (e.g. your AWS Secret Key) in version-controlled configs that might end up in public repos. [.gitignore](http://www.git-scm.com/docs/gitignore) is your friend.
-
-If you commit sensitive info to any public repo, consider it compromised. If this happens, you should always generate a new key or password. You can mitigate the damage by following GitHub's instructions [here](https://help.github.com/articles/remove-sensitive-data/), but even then you should *still* generate a new key or password.
-
-For open-source projects that interact with private apis/keys/passwords, consider creating a `global.js.example` in your config dir with blank values and committing that file.
+For open-source projects that interact with private apis/keys/passwords, consider creating a `default.js.example` in your config dir with blank values and committing that file while adding your actual `default.js` to your `.gitignore`.
 
 ## License
 
-Mit. See license.md.
+Mit. See license.
